@@ -164,14 +164,14 @@ time_table_insert = ("""INSERT INTO time (start_time,
                                           month,
                                           year,
                                           weekday)
-                        SELECT a.start_time,
-                               EXTRACT(hour FROM start_time),
-                               EXTRACT(day FROM start_time),
-                               EXTRACT(week FROM start_time),
-                               EXTRACT(month FROM start_time),
-                               EXTRACT(year FROM start_time),
-                               EXTRACT(dayofweek FROM start_time)
-                        FROM (SELECT TIMESTAMP 'epoch' + start_time/1000 *INTERVAL '1 second' as start_time FROM songplays) a;""")
+                        SELECT timestamp 'epoch' + se.ts/1000 * interval '1 second' as start_time_insert,
+                        DATE_PART(hrs, start_time_insert) as hours,
+                        DATE_PART(dayofyear, start_time_insert) as day,
+                        DATE_PART(w, start_time_insert) as week,
+                        DATE_PART(mons ,start_time_insert) as month,
+                        DATE_PART(yrs , start_time_insert) as year,
+                        DATE_PART(dow, start_time_insert) as day_of_week
+                        FROM staging_events_table se;""")
 
 # QUERY LISTS
 
@@ -179,10 +179,6 @@ create_table_queries = [staging_events_table_create, staging_songs_table_create,
 drop_table_queries = [staging_events_table_drop, staging_songs_table_drop, songplay_table_drop, user_table_drop, song_table_drop, artist_table_drop, time_table_drop]
 copy_table_queries = [staging_events_copy, staging_songs_copy]
 insert_table_queries = [songplay_table_insert, user_table_insert, song_table_insert, artist_table_insert, time_table_insert]
-
-
-
-
 
 
 #notes:
