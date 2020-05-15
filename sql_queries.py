@@ -88,14 +88,14 @@ time_table_create = ("""CREATE TABLE IF NOT EXISTS time (start_time timestamp PR
 # STAGING TABLES
 
 staging_events_copy = ("""COPY staging_events_table
-                          FROM {}
+                          FROM '{}'
                           CREDENTIALS 'aws_iam_role={}'
                           REGION 'us-west-2'
-                          JSON AS {}
+                          JSON AS '{}'
                        """).format(config.get('S3', 'LOG_DATA'), config.get('IAM_ROLE', 'ARN'), config.get('S3', 'LOG_JSONPATH'))
 
 staging_songs_copy = ("""COPY staging_songs_table
-                         FROM {}
+                         FROM '{}'
                          CREDENTIALS 'aws_iam_role={}'
                          REGION 'us-west-2'
                          JSON as 'auto'

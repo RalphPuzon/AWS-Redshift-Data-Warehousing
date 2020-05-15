@@ -4,18 +4,49 @@ from sql_queries import create_table_queries, drop_table_queries
 
 
 def drop_tables(cur, conn):
+    """
+    Drop existing tables with names specified in the drop_table_queries list.
+    
+    Arguments:
+        cur - PostgreSQL cursor object
+        conn - psycopg2 connection instance
+        
+    Returns:
+        None
+    """
     for query in drop_table_queries:
         cur.execute(query)
         conn.commit()
+        
 
 
 def create_tables(cur, conn):
+    """
+    Create tables with names specified in the create_table_queries list.
+    
+    Arguments:
+        cur - PostgreSQL cursor object
+        conn - psycopg2 connection instance
+        
+    Returns:
+        None
+    """
     for query in create_table_queries:
         cur.execute(query)
-        conn.commit()
+        conn.commit()       
 
 
 def main():
+    """
+    Drop the existing tables with names specified in the drop_table_queries list,
+    and then create tables with names specified in the create_table_queries list.
+    
+    Arguments:
+        None
+        
+    Returns:
+        None
+    """
     config = configparser.ConfigParser()
     config.read('dwh.cfg')
     
@@ -25,7 +56,7 @@ def main():
 
     drop_tables(cur, conn)
     create_tables(cur, conn)
-
+    
     conn.close()
 
 
